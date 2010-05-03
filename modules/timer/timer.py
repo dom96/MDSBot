@@ -15,7 +15,12 @@ def timerEnd(server, chan, msg, time):
     global timers
     try:
         del timers[timers.index([time, msg])]
-        server.send("PRIVMSG %s :%s" % (chan, msg))
+        fMsg = msg
+        # Make /me into an action :P
+        if msg.startswith("/me"):
+            fMsg = fMsg.replace("/me", "\x01ACTION") + "\x01"
+
+        server.send("PRIVMSG %s :%s" % (chan, fMsg))
     except:
         pass
 
@@ -35,8 +40,8 @@ def cmd(server, word, word_eol, usrManager):
                     msg = server.gen_eol(word[3])[2]
                     import threading, time
                     t = (hour * 3600 + minute * 60 + second)
-                    timers.append([time.time() + t, msg])
-                    t = threading.Timer(t, timerEnd, [server, word[2], msg, time.time() + t])
+                    timers.append([int(time.time() + t), msg])
+                    t = threading.Timer(t, timerEnd, [server, word[2], msg, int(time.time() + t)])
                     t.start()
 
                     return True

@@ -445,10 +445,12 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
                 if len(word[3].split()) > 2:
                     name = word[3].split()[2]
                     
-                    import imp
+                    import imp, os, sys
                     try:
-                        loadedModules[name] = imp.load_source(name, "modules/%s/%s.py" %(name, name))
+                        loadedModules[name] = imp.load_source(name, \
+                            os.path.join(os.path.dirname(sys.argv[0]), "modules/%s/%s.py" % (name, name)))
                         loadedModules[name].main(server, word[2], usrManager)
+                        XmlHelper.saveSettings(loadedModules)
                     except IOError:
                         server.send("PRIVMSG %s :%s" % (word[2], "\x0305Module not found"))
 
@@ -464,6 +466,7 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
                     try:
                         loadedModules[name].destroy(server)
                         del loadedModules[name]
+                        XmlHelper.saveSettings(loadedModules)
                     except KeyError:
                         server.send("PRIVMSG %s :%s" % (word[2], "\x0305Module not found"))
 
@@ -482,9 +485,12 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
                         del loadedModules[name]
 
                         # Load the module
-                        import imp
-                        loadedModules[name] = imp.load_source(name, "modules/%s/%s.py" %(name, name))
+                        import imp, os, sys
+                        loadedModules[name] = imp.load_source(name, \
+                            os.path.join(os.path.dirname(sys.argv[0]), "modules/%s/%s.py" % (name, name)))
                         loadedModules[name].main(server, word[2], usrManager)
+
+                        XmlHelper.saveSettings(loadedModules)
                     except KeyError:
                         server.send("PRIVMSG %s :%s" % (word[2], "\x0305Module not found"))
                         return True

@@ -4,19 +4,31 @@ Created on 2009-12-16
 
 @author: Dominik
 '''
-from IRCLibrary import IRC
-addresses = [["irc.freenode.net", 6667, "", False]]
-s = IRC.connection(addresses, ["MDSBot", "MDSBot_"], "MDSBot, MDSBot", "MDSBot")
-s.autojoinchans = ["#()"]
-
 import XmlHelper
 usrManager = XmlHelper.load_users()
 factoidManager = XmlHelper.load_factoids()
+loadedSettings = XmlHelper.loadSettings()
+print loadedSettings['nicks']
 
 import relay
 relayManager = relay.relay_manager()
 
+from IRCLibrary import IRC
+addresses = loadedSettings['addresses']
+s = IRC.connection(addresses, loadedSettings['nicks'], \
+        loadedSettings['realname'], loadedSettings['username'])
+s.autojoinchans = loadedSettings['channels']
+
 loadedModules = {}
+for module in loadedSettings['modules']:
+    import imp, os, sys
+    try:
+        loadedModules[module] = imp.load_source(module, \
+            os.path.join(os.path.dirname(sys.argv[0]), "modules/%s/%s.py" % (module, module)))
+        loadedModules[module].main(s, "", usrManager)
+    except IOError:
+        import traceback; traceback.print_exc()
+        print "Error: module '%s' could not be found." % (module)
 
 def main():
 

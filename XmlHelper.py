@@ -76,8 +76,43 @@ def save_factoids(factoid_manager, path=os.path.join(os.path.dirname(sys.argv[0]
     f = open(path, "w")
     f.write(xmlDoc.toprettyxml(indent="    "))
     return True
+
+# Settings
+def loadSettings(path=os.path.join(os.path.dirname(sys.argv[0]), "settings.xml")):
+    """Loads the settings"""
+    settings = {}
+
+    xmlDoc = xml.dom.minidom.parse(path)
+
+    settings['addresses'] = []
+    for addressElement in xmlDoc.getElementsByTagName("address"):
+        address = []
+        address.append(getAttribute(addressElement.attributes, "host"))
+        address.append(int(getAttribute(addressElement.attributes, "port")))
+        address.append(getAttribute(addressElement.attributes, "pass"))
+        address.append(getAttribute(addressElement.attributes, "ssl").lower() == "true")
+        settings['addresses'].append(address)
     
+    infoElement = xmlDoc.getElementsByTagName("info")[0]
+    settings['nicks'] = getAttribute(infoElement.attributes, "nicks").split(",")
+    settings['username'] = getAttribute(infoElement.attributes, "username")
+    settings['realname'] = getAttribute(infoElement.attributes, "realname")
+    settings['channels'] = getAttribute(infoElement.attributes, "channels").split(",")
+
+    modulesElement = xmlDoc.getElementsByTagName("modules")[0]
+    settings['modules'] = getAttribute(modulesElement.attributes, "load").split(",")
+
+    return settings
+
+def saveSettings(loadedModules, path=os.path.join(os.path.dirname(sys.argv[0]), "settings.xml")):
+    xmlDoc = xml.dom.minidom.parse(path)
+
+    xmlDoc.getElementsByTagName("modules")[0].setAttribute("load", ",".join(loadedModules.keys()))
     
+    f = open(path, "w")
+    f.write(xmlDoc.toprettyxml(indent="    "))
+    return True    
+
 """getText, Get's the text of a tag"""
 def getText(nodelist):
     txt = ""
