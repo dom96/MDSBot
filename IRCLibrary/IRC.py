@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Nyx - A powerful IRC Client
+MDS IRC Lib
 Copyright (C) 2009 Mad Dog Software 
 http://maddogsoftware.co.uk - morfeusz8@yahoo.co.uk
 
@@ -24,7 +24,7 @@ import thread
 ########################
 version = "0.1"
 
-class server:
+class connection:
     def __init__(self, addresses, nicks, realname, username):
         self.addresses = addresses # Addresses of which to connect to.
         self.nicks = nicks # Nicks to use
@@ -36,7 +36,7 @@ class server:
         self.port = None #This is none if not connected
         self.socket = None #This is none if not connected
         
-        self.autojoinchans = [] #These will be joined when the End of MOTD(376) command is received.
+        self.autojoinchans = [] #These will be joined when the 001 command is received.
         
         self.nick = nicks[0]
         
@@ -52,7 +52,7 @@ class server:
         self.gen_eol = gen_eol
         
     def connect(self, addr=0, pingServ=True, threaded=True):
-        """Connects this server(Asynchronosouly), you can pass a optional integer of the address(in addresses)"""
+        """Connects this server(Asynchronously), you can pass a optional integer of the address(in addresses)"""
         try:
             #If connect is called, spawn it in a new thread
             if threaded == True:
@@ -82,10 +82,6 @@ class server:
                 
                 logger.log_instance.log("Couldn't connect to server: " + str(err), "IRC.server.connect", "error")
                 
-            #########################
-            #RESPONSE FUNCTION      #
-            #########################
-            thread.start_new(lambda x: self.response(), (None,))
             
             #Register the connection
             if self.addresses[addr][2] != '':
@@ -93,17 +89,26 @@ class server:
             
             self.socket.send("NICK %s\r\n" % (self.nick))
             
-            self.socket.send("USER %s %s %s :%s\r\n" % (self.username, self.username, self.addresses[addr][0], self.realname))
+            self.socket.send("USER %s %s %s :%s\r\n" % (self.username, \
+                self.username, self.addresses[addr][0], self.realname))
             
             #Hook the RPL_WELCOME(001) command, to the ping_server function.
             if pingServ:
-                self.events.hook_event("001", lambda s, w, w_eol, args: thread.start_new(lambda x: self.pinger.ping_server(), (None,)))
+                self.events.hook_event("001", lambda s, w, w_eol, \
+                    args: thread.start_new(lambda x: self.pinger.ping_server(), (None,)))
             #And also hook the 001 to the autojoin_chans function
             if len(self.autojoinchans) != 0:
-                self.events.hook_event("001", lambda s, w, w_eol, args: thread.start_new(lambda x: self.autojoin_chans(), (None,)))
+                self.events.hook_event("001", lambda s, w, w_eol, \
+                    args: thread.start_new(lambda x: self.autojoin_chans(), (None,)))
             #This will reply to the PING command
             self.events.hook_event("PING", lambda serv, w, w_eol, args: serv.send("PONG %s" % (w_eol[2])), 5)
             
+            #########################
+            #RESPONSE FUNCTION      #
+            #########################
+            #thread.start_new(lambda x: self.response(), (None,))
+            self.response() # Use this thread for the response function.
+
         except Exception as err:
             logger.log_instance.log(err, "IRC.connect", "critical")
         

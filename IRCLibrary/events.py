@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Nyx - A powerful IRC Client
+MDS IRC Lib
 Copyright (C) 2009 Mad Dog Software 
 http://maddogsoftware.co.uk - morfeusz8@yahoo.co.uk
 

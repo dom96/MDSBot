@@ -6,7 +6,8 @@ Created on 2009-12-16
 '''
 from IRCLibrary import IRC
 addresses = [["irc.freenode.net", 6667, "", False]]
-s = IRC.server(addresses, ["MDSBot", "MDSBot_"], "MDSBot, MDS Net Bot", "MDSBot")
+s = IRC.connection(addresses, ["MDSBot", "MDSBot_"], "MDSBot, MDSBot", "MDSBot")
+s.autojoinchans = ["#()"]
 
 import XmlHelper
 usrManager = XmlHelper.load_users()
@@ -27,13 +28,14 @@ def main():
 
     s.events.hook_event("QUIT", quit_logout)
     
-
     s.events.hook_event("PRIVMSG", privmsg)
-    s.events.hook_event("001", oper)
-    s.connect(pingServ=False)
+    s.events.hook_event("disconnect", disconnect)
+    s.connect(pingServ=False, threaded=False)
+
+    # TODO: having .connect not calling .response would make more sense...
 
 def disconnect(server, word, word_eol, args):
-    pass
+    import sys; sys.exit(1)
     
 def privmsg(server, word, word_eol, args):
     import commands
@@ -41,19 +43,12 @@ def privmsg(server, word, word_eol, args):
         commands.cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loadedModules)
     except:
         import traceback; traceback.print_exc()
-
-def oper(server, word, word_eol, args):
-    server.send("JOIN #()")
     
 def quit_logout(server, word, word_eol, args):
     usrManager.change_user_status(word[0].split("!")[0], False)
     
 if __name__ == '__main__':
     main()
-
-    import time
-    while True:
-        time.sleep(10)
         
         
         

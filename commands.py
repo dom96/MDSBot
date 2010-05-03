@@ -6,6 +6,8 @@ Created on 2009-12-16
 '''
 import XmlHelper
 def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loadedModules):
+    # if this is not a PRIVMSG to a channel make word[2] the nick of the
+    # person that is sending this.
     if word[2] == server.nick:
         word[2] = word[0].split("!")[0]
     
@@ -34,7 +36,6 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
                 relayManager.rem(i, quitMsg=quitMsg)
             
             server.send("QUIT :%s" % (quitMsg))
-            import sys; sys.exit(1)
         else:
             usrManager.print_insufficient_privils(word, server, "quit")
         return True
@@ -67,7 +68,6 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
             XmlHelper.save_users(usrManager)
             #Send a message confirming.
             server.send("PRIVMSG %s :%s" % (word[0].split("!")[0], "You have registered successfully"))
-            server.send("PRIVMSG %s :%s" % ("#opers", "\x0307" + nick + "\x03 registered"))
         else:
             reply = "An account for " + nick + " already exists."
             server.send("PRIVMSG %s :%s" % (word[0].split("!")[0], reply))
@@ -91,10 +91,8 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
                 usrManager.change_user_status(nick, True)
                 #Send a message confirming.
                 server.send("PRIVMSG %s :%s" % (word[0].split("!")[0], "You are now identified as \x02" + nick))
-                server.send("PRIVMSG %s :%s" % ("#opers", "\x0307" + nick + "\x03logged in."))
             else:
                 server.send("PRIVMSG %s :%s" % (word[0].split("!")[0], "\x0305Incorrect password"))
-                server.send("PRIVMSG %s :%s" % ("#opers", "\x0307" + nick + "\x03failed to login"))
         else:
             server.send("PRIVMSG %s :%s" % (word[0].split("!")[0], "\x0305No user by this nickname found"))
         
@@ -113,10 +111,8 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
                     usrManager.change_user_status(nick, False)
                     #Send a message confirming.
                     server.send("PRIVMSG %s :%s" % (word[0].split("!")[0], "\x02" + nick + "\x02 is now logged out"))
-                    server.send("PRIVMSG %s :%s" % ("#opers", "\x0307" + nick + "\x03logged out."))
                 else:
                     server.send("PRIVMSG %s :%s" % (word[0].split("!")[0], "\x0305Incorrect password"))
-                    server.send("PRIVMSG %s :%s" % ("#opers", "\x0307" + nick + "\x03failed to logout"))
                 
             else:
                 server.send("PRIVMSG %s :%s" % (word[0].split("!")[0], "\x0305User doesn't exist"))
@@ -158,9 +154,6 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
                         server.send("PRIVMSG %s :%s" % (word[2], \
                                     "\x0303Privileges for \x0307" + word[3].split()[1] + " \x0303added successfully"))
                         
-                        opersMsg = "\x0307" + word[0].split("!")[0] + "\x03"
-                        opersMsg += "gave " + word[3].split()[4] + " to\x0307" + word[3].split()[1]
-                        server.send("PRIVMSG %s :%s" % ("#opers", opersMsg))
                     else:
                         usrManager.print_insufficient_privils(word, server, "user_privils_add")
                     
@@ -178,9 +171,6 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
                         server.send("PRIVMSG %s :%s" % (word[2], \
                                     "\x0303Privileges for \x0307" + word[3].split()[1] + " \x0303removed successfully"))
                         
-                        opersMsg = "\x0307" + word[0].split("!")[0] + "\x03"
-                        opersMsg += "removed " + word[3].split()[4] + " from\x0307" + word[3].split()[1]
-                        server.send("PRIVMSG %s :%s" % ("#opers", opersMsg))
                     else:
                         usrManager.print_insufficient_privils(word, server, "user_privils_rem")
                     

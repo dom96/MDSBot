@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Nyx - A powerful IRC Client
+MDS IRC Lib
 Copyright (C) 2009 Mad Dog Software 
 http://maddogsoftware.co.uk - morfeusz8@yahoo.co.uk
 
@@ -27,17 +27,14 @@ lock = threading.Lock() #Lot's of threads call the log function
 
 class logger:
 
-    def __init__(self, text="Nyx logging initialized"):
+    def __init__(self, text):
         """
         Starts the log, opens the file, writes text to the file, and a div tag
         """
         #FILENAME
-        LOG_FILENAME = os.path.dirname(sys.argv[0]) + "\\log.html"
-                
-        if LOG_FILENAME.replace("/", "\\").startswith("\\"):
-            LOG_FILENAME = "C:\\log.html"
-            #!-TODO-! Make the path different in linux...
-        print LOG_FILENAME
+        LOG_FILENAME = os.path.join(os.path.dirname(sys.argv[0]), "log.html")
+        
+        
         #Open the log file...
         self.fLog = open(LOG_FILENAME, "a")
         self.write("<div style=\"font-family:Calibri;\">\n" + text + "<br/>\n")
@@ -109,5 +106,5 @@ class logger:
     
 #If this modules is imported, initialize the logger class
 if __name__ != "__main__":
-        log_instance = logger()
+        log_instance = logger("MDSBot 0.1 initialized")
     

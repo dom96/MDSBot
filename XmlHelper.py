@@ -7,14 +7,15 @@ import xml.dom.minidom
 import os, sys
 
 #USERS
-def load_users(path=os.path.dirname(sys.argv[0]) + "\\users.xml"):
+def load_users(path=os.path.join(os.path.dirname(sys.argv[0]), "users.xml")):
     """Loads the users"""
     xmlDoc = xml.dom.minidom.parse(path)
     import users
     usrManager = users.user_manager()
     for userElement in xmlDoc.getElementsByTagName("user"):
         nick = getAttribute(userElement.attributes, "nick")
-        password = getAttribute(userElement.attributes, "password")
+        import base64
+        password = base64.b64decode(getAttribute(userElement.attributes, "password"))
         email = getAttribute(userElement.attributes, "email")
         privileges = getAttribute(userElement.attributes, "privileges")
         
@@ -24,14 +25,15 @@ def load_users(path=os.path.dirname(sys.argv[0]) + "\\users.xml"):
     return usrManager
         
         
-def save_users(user_manager, path=os.path.dirname(sys.argv[0]) + "\\users.xml"):
+def save_users(user_manager, path=os.path.join(os.path.dirname(sys.argv[0]), "users.xml")):
     """Saves the users"""
     xmlDoc = xml.dom.minidom.parseString("<users></users>")
     
     for i in user_manager.users:
         userElement = xmlDoc.createElement("user")
         userElement.setAttribute("nick", i.nick)
-        userElement.setAttribute("password", i.password)
+        import base64
+        userElement.setAttribute("password", base64.b64encode(i.password))
         userElement.setAttribute("privileges", ",".join(i.privileges))
         userElement.setAttribute("email", i.email)
         xmlDoc.documentElement.appendChild(userElement)
@@ -41,7 +43,7 @@ def save_users(user_manager, path=os.path.dirname(sys.argv[0]) + "\\users.xml"):
     return True
     
 #FACTOIDS
-def load_factoids(path=os.path.dirname(sys.argv[0]) + "\\factoids.xml"):
+def load_factoids(path=os.path.join(os.path.dirname(sys.argv[0]), "factoids.xml")):
     """Loads the users"""
     xmlDoc = xml.dom.minidom.parse(path)
     import factoids
@@ -54,7 +56,7 @@ def load_factoids(path=os.path.dirname(sys.argv[0]) + "\\factoids.xml"):
         
     return factoidManager
 
-def save_factoids(factoid_manager, path=os.path.dirname(sys.argv[0]) + "\\factoids.xml"):
+def save_factoids(factoid_manager, path=os.path.join(os.path.dirname(sys.argv[0]), "factoids.xml")):
     """Saves the users"""
     xmlDoc = xml.dom.minidom.parseString("<factoids></factoids>")
     
