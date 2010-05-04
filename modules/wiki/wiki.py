@@ -4,7 +4,7 @@ Created on 2019-04-09
 
 @author: Dominik
 '''
-
+about = "A 'half-assed' wiki module."
 def main(server, initOnChannel, usrManager):
     pass
 

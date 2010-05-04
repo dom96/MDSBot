@@ -459,6 +459,17 @@ def cmd(server, word, word_eol, usrManager, relayManager, loadedModules):
 
             return True
 
+        elif word[3].split()[1] == "about":
+            if len(word[3].split()) > 2:
+                name = word[3].split()[2]
+                try:
+                    server.send("PRIVMSG %s :%s" % (word[2], loadedModules[name].about))
+                except KeyError:
+                    server.send("PRIVMSG %s :%s" % (word[2], "\x0305Module not found"))
+                except AttributeError:
+                    server.send("PRIVMSG %s :%s" % (word[2], "\x0305Module has no about message."))
+                return True
+
     # Call the modules .cmd
     for i in iter(loadedModules):
         try:

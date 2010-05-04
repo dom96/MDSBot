@@ -6,6 +6,7 @@ By Dominik Picheta
 import os.path, sys
 import fClass
 factoidManager = False
+about = "This module lets you save and retrieve factoids."
 def main(server, initOnChannel, usrManager):
     global factoidManager
     factoidsDataPath = os.path.join(os.path.join(sys.path[0], \

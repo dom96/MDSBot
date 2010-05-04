@@ -4,6 +4,7 @@ Created on 2019-04-10
 
 @author: Dominik
 '''
+about = "This module lets you set a timer, which when it stops will send a message."
 timers = [] # seconds when the timer ends.., message
 def main(server, initOnChannel, usrManager):
     pass

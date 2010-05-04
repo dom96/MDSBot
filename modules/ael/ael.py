@@ -4,7 +4,7 @@ Created on 2019-04-03
 
 @author: Dominik
 '''
-
+about = "This module implements the AEL(Awesome Esoteric Language) interpreter"
 def main(server, initOnChannel, usrManager):
     pass
 

@@ -4,7 +4,7 @@ Created on 2010-04-02
 
 @author: Dominik
 '''
-
+about = "This module lets you download other modules from pastebin."
 def main(server, initOnChannel, usrManager):
     pass
 
