@@ -5,10 +5,6 @@
         <content content="an irc mentor"/>
         <content content="awesome"/>
     </factoid>
-    <factoid name="test">
-        <content content="test"/>
-        <content content="another test"/>
-    </factoid>
     <factoid name="curtis">
         <content content="wishing to be cool"/>
         <content content="gay"/>
@@ -88,5 +84,8 @@
     </factoid>
     <factoid name="lexus">
         <content content="http://en.wikipedia.org/wiki/Lexus_LFA"/>
+    </factoid>
+    <factoid name="mdsbot">
+        <content content="is the best"/>
     </factoid>
 </factoids>

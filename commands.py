@@ -5,7 +5,7 @@ Created on 2009-12-16
 @author: Dominik
 '''
 import XmlHelper
-def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loadedModules):
+def cmd(server, word, word_eol, usrManager, relayManager, loadedModules):
     # if this is not a PRIVMSG to a channel make word[2] the nick of the
     # person that is sending this.
     if word[2] == server.nick:
@@ -42,8 +42,13 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
     
     elif word[3].startswith("|say"):
         if usrManager.logged_in(word[0].split("!")[0], ["say", "*"]):
+            chann = word[2]
             msg = server.gen_eol(word[3])[1]
-            server.send("PRIVMSG %s :%s" % (word[2], msg))
+            if word[3].split()[1].startswith("#"):
+                chann = word[3].split()[1]
+                msg = server.gen_eol(word[3])[2]
+
+            server.send("PRIVMSG %s :%s" % (chann, msg))
         else:
             usrManager.print_insufficient_privils(word, server, "say")
 
@@ -360,64 +365,7 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
     #    RELAY END   #
     ##################
     # FACTOIDS START #
-    elif word[3].startswith("|factoids"):
-        try:
-            if word[3].split()[1] == "add":
-                if len(word[3].split()) > 3:
-                    if usrManager.logged_in(word[0].split("!")[0], ["factoids_add", "*"]):
-                        name = word[3].split()[2]
-                        contents = " ".join(word[3].split()[3:])
 
-                        factoidManager.add_factoid(name, contents)
-                        XmlHelper.save_factoids(factoidManager)
-                        server.send("PRIVMSG %s :%s" % (word[2], "\x0303Factoid added!"))
-                    else:
-                        usrManager.print_insufficient_privils(word, server, "factoids_add")
-                else:
-                    server.send("PRIVMSG %s :%s" % (word[2], "|factoids add name something..."))
-                    
-            if word[3].split()[1] == "rem":
-                if len(word[3].split()) > 3:
-                    if usrManager.logged_in(word[0].split("!")[0], ["factoids_rem", "*"]):
-                        name = word[3].split()[2]
-                        contents = word[3].split()[2:]                   
-
-                        factoidManager.add_factoid(name, contents)
-                        XmlHelper.save_factoids(factoidManager)
-                        server.send("PRIVMSG %s :%s" % (word[2], "\x0303Factoid added!"))
-                    else:
-                        usrManager.print_insufficient_privils(word, server, "factoids_rem")
-                else:
-                    server.send("PRIVMSG %s :%s" % (word[2], "|factoids rem name"))
-                    
-            if word[3].split()[1] == "get":
-                if len(word[3].split()) > 2:
-                        name = word[3].split()[2]
-
-                        fact = factoidManager.get_factoid(name)
-                        if fact != False:
-                            msg = "\x0307" + name + " \x0314is\x03 "
-                            for i in range(len(fact.contents)):
-                                if i == len(fact.contents) - 1:
-                                    msg += fact.contents[i]
-                                elif i == len(fact.contents) - 2:
-                                    msg += fact.contents[i] + " \x0314and also is\x0301 "
-                                else:
-                                    msg += fact.contents[i] + "\x0314, \x0301"
-                            server.send("PRIVMSG %s :%s" % (word[2], msg))
-                            
-                        else:
-                            server.send("PRIVMSG %s :%s" % (word[2], "\x0305Factoid not found"))
-
-                else:
-                    server.send("PRIVMSG %s :%s" % (word[2], "|factoids add name something..."))
-            
-            
-        except Exception as err:
-            import traceback; traceback.print_exc()
-            server.send("PRIVMSG %s :%s" % (word[2], "|factoids [add/rem/get]"))
-        return True
-    
     elif word[3].startswith("|join") and len(word[3].split()) > 1:
         if usrManager.logged_in(word[0].split("!")[0], ["join", "*"]):
             server.send("JOIN %s" % (word[3].split()[1]))
@@ -447,11 +395,13 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
                     
                     import imp, os, sys
                     try:
-                        loadedModules[name] = imp.load_source(name, \
-                            os.path.join(os.path.dirname(sys.argv[0]), "modules/%s/%s.py" % (name, name)))
+                        modulePath = os.path.join(os.path.dirname(sys.argv[0]), "modules/%s/%s.py" % (name, name))
+                        sys.path.append(os.path.dirname(modulePath))
+                        loadedModules[name] = imp.load_source(name, modulePath)
                         loadedModules[name].main(server, word[2], usrManager)
                         XmlHelper.saveSettings(loadedModules)
                     except IOError:
+                        import traceback;traceback.print_exc()
                         server.send("PRIVMSG %s :%s" % (word[2], "\x0305Module not found"))
 
             else:
@@ -466,6 +416,8 @@ def cmd(server, word, word_eol, usrManager, relayManager, factoidManager, loaded
                     try:
                         loadedModules[name].destroy(server)
                         del loadedModules[name]
+                        modulePath = os.path.join(os.path.dirname(sys.argv[0]), "modules/%s/%s.py" % (name, name))
+                        import sys; sys.path.remove(sys.path.index(os.path.dirname(modulePath)))
                         XmlHelper.saveSettings(loadedModules)
                     except KeyError:
                         server.send("PRIVMSG %s :%s" % (word[2], "\x0305Module not found"))

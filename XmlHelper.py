@@ -63,7 +63,7 @@ def save_factoids(factoid_manager, path=os.path.join(os.path.dirname(sys.argv[0]
     for i in factoid_manager.factoids:
         factoidElement = xmlDoc.createElement("factoid")
         factoidElement.setAttribute("name", i.name)
-        print i.contents
+        
         for content in i.contents:
             print content
             contentElement = xmlDoc.createElement("content")
@@ -105,12 +105,16 @@ def loadSettings(path=os.path.join(os.path.dirname(sys.argv[0]), "settings.xml")
     return settings
 
 def saveSettings(loadedModules, path=os.path.join(os.path.dirname(sys.argv[0]), "settings.xml")):
-    xmlDoc = xml.dom.minidom.parse(path)
+    f = open(path, "r")
+    xmlDoc = xml.dom.minidom.parseString(f.read().replace("\n", ""))
+    f.close()
 
     xmlDoc.getElementsByTagName("modules")[0].setAttribute("load", ",".join(loadedModules.keys()))
     
     f = open(path, "w")
+    print xmlDoc.toprettyxml(indent="    ")
     f.write(xmlDoc.toprettyxml(indent="    "))
+    f.close()
     return True    
 
 """getText, Get's the text of a tag"""

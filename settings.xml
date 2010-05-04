@@ -1,22 +1,10 @@
 <?xml version="1.0" ?>
 <settings>
-    
-    
-    
-    
+                                                                                                                
     <address host="irc.freenode.net" pass="" port="6667" ssl="False"/>
-    
-    
-    
-    
+                                                                                                                
     <info channels="#()" nicks="MDSBot,MDSBot_,MDSBot__,MDSBot___" realname="MDSBot" username="MDSBot"/>
-    
-    
-    
-    
-    <modules load="timer"/>
-    
-    
-
-
+                                                                                                                
+    <modules load="wiki,nickserv,factoids,timer,lmgtfy"/>
+                                                        
 </settings>

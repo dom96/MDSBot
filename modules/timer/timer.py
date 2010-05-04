@@ -18,7 +18,7 @@ def timerEnd(server, chan, msg, time):
         fMsg = msg
         # Make /me into an action :P
         if msg.startswith("/me"):
-            fMsg = fMsg.replace("/me", "\x01ACTION") + "\x01"
+            fMsg = "\x01ACTION " + fMsg[4:] + "\x01"
 
         server.send("PRIVMSG %s :%s" % (chan, fMsg))
     except:
