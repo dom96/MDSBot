@@ -38,6 +38,15 @@ def cmd(server, word, word_eol, usrManager):
             if usrManager.logged_in(word[0].split("!")[0], ["modules_delete", "*"]):
                 if len(word[3].split()) > 2:
                     name = word[3].split()[2]
+                    if len(word[3].split()) < 4:
+                        msg = "\x0305Please confirm by typing, \x02|modules delete " + name + " -c"
+                        server.send("PRIVMSG " + word[2] + " :" + msg)
+                        return True
+                    else:
+                        if word[3].split()[3] != "-c":
+                            msg = "\x0305Please confirm by typing, \x02|modules delete " + name + " -c"
+                            server.send("PRIVMSG " + word[2] + " :" + msg)
+                            return True
                     
                     if name == "modulepb":
                         server.send("PRIVMSG " + word[2] + " :\x0305How dare you try to delete the almighty modulepb")
@@ -49,7 +58,8 @@ def cmd(server, word, word_eol, usrManager):
                     else:
                         server.send("PRIVMSG " + word[2] + " :\x0305Module not found")
                     return True
-
+            else:
+                usrManager.print_insufficient_privils(word, server, "modules_delete")
 
 
 
