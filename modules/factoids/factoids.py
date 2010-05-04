@@ -48,7 +48,17 @@ def cmd(server, word, word_eol, usrManager):
                         usrManager.print_insufficient_privils(word, server, "factoids_rem")
                 else:
                     server.send("PRIVMSG %s :%s" % (word[2], "|factoids rem name"))
+            
+            if word[3].split()[1] == "list":
+                msg = "Factoids: "
+                for i in range(len(factoidManager.factoids)):
+                    msg += factoidManager.factoids[i].name
+                    if i != len(factoidManager.factoids)-1:
+                         msg += ", "
                     
+
+                server.send("PRIVMSG %s :%s" % (word[2], msg))
+
             if word[3].split()[1] == "get":
                 if len(word[3].split()) > 2:
                         name = word[3].split()[2]

@@ -61,6 +61,7 @@
     </factoid>
     <factoid name="XAMPP">
         <content content="is just absolutely purely 100% cool"/>
+        <content content="singer"/>
     </factoid>
     <factoid name="Raynes">
         <content content="a guy that knows clojure, Ioke and a bit of Haskell"/>
@@ -87,5 +88,8 @@
     </factoid>
     <factoid name="mdsbot">
         <content content="is the best"/>
+    </factoid>
+    <factoid name="alcohol">
+        <content content="awesomness"/>
     </factoid>
 </factoids>
