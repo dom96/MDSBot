@@ -31,6 +31,8 @@ def cmd(server, word, word_eol, usrManager):
                     urllib.urlretrieve("http://pastebin.com/download.php?i=" + pbName, \
                             "modules/" + moduleName + "/" + moduleName + ".py")
                     server.send("PRIVMSG " + word[2] + " :\x0303Module downloaded successfully")
+                else:
+                    server.send("PRIVMSG " + word[2] + " :|modules getpb PBUrl ModuleName")
             else:
                 usrManager.print_insufficient_privils(word, server, "modules_getpb")
             return True
@@ -58,6 +60,8 @@ def cmd(server, word, word_eol, usrManager):
                     else:
                         server.send("PRIVMSG " + word[2] + " :\x0305Module not found")
                     return True
+                else:
+                    server.send("PRIVMSG " + word[2] + " :|modules delete ModuleName")
             else:
                 usrManager.print_insufficient_privils(word, server, "modules_delete")
 
