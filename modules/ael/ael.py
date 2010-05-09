@@ -18,7 +18,14 @@ def cmd(server, word, word_eol, usrManager):
             import os, os.path
             
             import subprocess
-            p = subprocess.Popen([os.path.dirname(os.path.realpath(__file__)) + "\\ael.exe"], \
+            path = ""
+            if os.name == "posix":
+                path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "ael")
+            elif os.name == "nt":
+                path = os.path.dirname(os.path.realpath(__file__)) + "\\ael.exe"
+
+            
+            p = subprocess.Popen([path], \
                     stdout = subprocess.PIPE, stdin = subprocess.PIPE)
             stdoutdata, stderrdata = p.communicate(code)
             for i in stdoutdata.split("\n"):

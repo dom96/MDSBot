@@ -20,9 +20,11 @@
         <content content="a guy who knows VB.NET, C#, C++ (a little), Java (a little), Python, and some JavaScript"/>
         <content content="a VB!"/>
         <content content="&lt;Amrykid&gt; doesn't matter what language you use, its the output that counts"/>
+        <content content="a guy who doesn't have a cool pervert side anymore!!!!"/>
     </factoid>
     <factoid name="doctor_who">
         <content content="cool"/>
+        <content content="awesome"/>
     </factoid>
     <factoid name="sbell">
         <content content="is the owner of fusionet24.com!"/>
@@ -91,5 +93,11 @@
     </factoid>
     <factoid name="alcohol">
         <content content="awesomness"/>
+    </factoid>
+    <factoid name="#botters">
+        <content content="awesome!"/>
+    </factoid>
+    <factoid name="fipu">
+        <content content="a random person"/>
     </factoid>
 </factoids>

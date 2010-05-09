@@ -363,9 +363,7 @@ def cmd(server, word, word_eol, usrManager, relayManager, loadedModules):
         return True
     
     #    RELAY END   #
-    ##################
-    # FACTOIDS START #
-
+    ##################
     elif word[3].startswith("|join") and len(word[3].split()) > 1:
         if usrManager.logged_in(word[0].split("!")[0], ["join", "*"]):
             server.send("JOIN %s" % (word[3].split()[1]))
@@ -416,8 +414,9 @@ def cmd(server, word, word_eol, usrManager, relayManager, loadedModules):
                     try:
                         loadedModules[name].destroy(server)
                         del loadedModules[name]
+                        import os, sys
                         modulePath = os.path.join(os.path.dirname(sys.argv[0]), "modules/%s/%s.py" % (name, name))
-                        import sys; sys.path.remove(sys.path.index(os.path.dirname(modulePath)))
+                        sys.path.remove(sys.path.index(os.path.dirname(modulePath)))
                         XmlHelper.saveSettings(loadedModules)
                     except KeyError:
                         server.send("PRIVMSG %s :%s" % (word[2], "\x0305Module not found"))
@@ -490,8 +489,8 @@ def cmd(server, word, word_eol, usrManager, relayManager, loadedModules):
 
             return True
 
-    if word[3].startswith("|"):
-        server.send("PRIVMSG %s :%s" % (word[2], "\x0305Unknown command"))
+    #if word[3].startswith("|"):
+    #    server.send("PRIVMSG %s :%s" % (word[2], "\x0305Unknown command"))
 
     return True
 
