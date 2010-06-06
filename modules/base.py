@@ -3,7 +3,7 @@
 Example module
 Take a look at the test module to check how events are handled.
 '''
-
+about = "About message goes here."
 def main(server, initOnChannel, usrManager):
     # This gets called when the module is initialized.
     # InitOnChannel is the channel this module was loaded. Or nothing

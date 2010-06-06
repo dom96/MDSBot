@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
 <users>
     <user email="" nick="dom96" password="dDNzdA==" privileges="*"/>
-    <user email="amrykid@gmail.com" nick="Amrykid" password="ZmlyZWZveA==" privileges="default,asyndefault,say,relay,join,factoids_add,op"/>
+    <user email="amrykid@gmail.com" nick="Amrykid" password="ZmlyZWZveA==" privileges="default,asyndefault,say,relay,join,op,list_users"/>
     <user email="windowsxnot@hotmail.com" nick="XAMPP" password="MTF3dzJubQ==" privileges="default,say"/>
     <user email="programble@gmail.com" nick="curtis" password="YXJrNG1vcGlk" privileges="default,shitster"/>
     <user email="fipu@ulul.ch" nick="fipu" password="dGVzdDEyMw==" privileges="default,say"/>
+    <user email="and" nick="Phoenix_" password="c2FudG9zLjk5OTlAaG90bWFpbC5jb20=" privileges="default"/>
 </users>

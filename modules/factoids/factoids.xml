@@ -4,6 +4,7 @@
         <content content="cool"/>
         <content content="an irc mentor"/>
         <content content="awesome"/>
+        <content content="learning asm"/>
     </factoid>
     <factoid name="curtis">
         <content content="wishing to be cool"/>
@@ -21,6 +22,7 @@
         <content content="a VB!"/>
         <content content="&lt;Amrykid&gt; doesn't matter what language you use, its the output that counts"/>
         <content content="a guy who doesn't have a cool pervert side anymore!!!!"/>
+        <content content="&lt;Amrykid&gt; dom96_, XAMPP, JStoker_, Ttech, Raynes, sbell_mac: dom96 is cooler, nicer, and BETTER THAN ME AT PROGRAMMING!"/>
     </factoid>
     <factoid name="doctor_who">
         <content content="cool"/>
@@ -28,6 +30,9 @@
     </factoid>
     <factoid name="sbell">
         <content content="is the owner of fusionet24.com!"/>
+        <content content="blasphemy!"/>
+        <content content="is the best awesomest person ever, infact sbell is god"/>
+        <content content="&lt;&lt;--- he has added that himself"/>
     </factoid>
     <factoid name="E-Wolfshade">
         <content content="[00:51] &lt;+E-Wolfshade&gt; I WANT TO SUCK CURTIS'S PENIS"/>
@@ -64,6 +69,7 @@
     <factoid name="XAMPP">
         <content content="is just absolutely purely 100% cool"/>
         <content content="singer"/>
+        <content content="awesome"/>
     </factoid>
     <factoid name="Raynes">
         <content content="a guy that knows clojure, Ioke and a bit of Haskell"/>
@@ -99,5 +105,41 @@
     </factoid>
     <factoid name="fipu">
         <content content="a random person"/>
+    </factoid>
+    <factoid name="JStoker">
+        <content content="cool"/>
+    </factoid>
+    <factoid name="lol">
+        <content content="http://whotookspaz.org/randomflash/TRIP2.swf"/>
+    </factoid>
+    <factoid name="insult">
+        <content content="http://whotookspaz.org/randomflash/best_insult_ever.swf"/>
+    </factoid>
+    <factoid name="breathtaking">
+        <content content="http://whotookspaz.org/randomflash/breathtaking.swf"/>
+    </factoid>
+    <factoid name="nooo">
+        <content content="http://whotookspaz.org/randomflash/omgnooo.swf"/>
+    </factoid>
+    <factoid name="tankgelion">
+        <content content="http://whotookspaz.org/randomflash/tankgelion.swf"/>
+    </factoid>
+    <factoid name="anime-face">
+        <content content="http://whotookspaz.org/randomflash/laptop-face.swf"/>
+    </factoid>
+    <factoid name="nitori">
+        <content content="http://whotookspaz.org/randomflash/Nitori_GETDOWN.swf"/>
+    </factoid>
+    <factoid name="chennyanyan">
+        <content content="http://whotookspaz.org/randomflash/chennyanyan.swf"/>
+    </factoid>
+    <factoid name="ilovedeath">
+        <content content="http://whotookspaz.org/randomflash/ilovedeath.swf"/>
+    </factoid>
+    <factoid name="touhou">
+        <content content="http://whotookspaz.org/randomflash/Touhou_Bad_Apple_PV.swf"/>
+    </factoid>
+    <factoid name="songofthecount">
+        <content content="http://whotookspaz.org/randomflash/song_of_the_count.swf"/>
     </factoid>
 </factoids>
